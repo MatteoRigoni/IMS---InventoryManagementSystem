@@ -3,6 +3,7 @@ using IMS.UseCases;
 using IMS.UseCases.Interfaces;
 using IMS.UseCases.PluginInterfaces;
 using IMS.UseCases.Products;
+using IMS.UseCases.Products.Interfaces;
 using IMS.WebApp.Areas.Identity;
 using IMS.WebApp.Data;
 using Microsoft.AspNetCore.Components.Authorization;
@@ -38,6 +39,10 @@ builder.Services.AddScoped<IAddInventoryUseCase, AddInventoryUseCase>();
 builder.Services.AddScoped<IEditInventoryUseCase, EditInventoryUseCase>();
 builder.Services.AddScoped<IGetInventoryByIdUseCase, GetInventoryByIdUseCase>();
 builder.Services.AddScoped<IViewProductsByNameUseCase, ViewProductsByNameUseCase>();
+builder.Services.AddScoped<IViewProductByIdUseCase, ViewProductByIdUseCase>();
+builder.Services.AddScoped<IAddProductUseCase, AddProductUseCase>(); 
+builder.Services.AddScoped<IEdiProductUseCase, EdiProductUseCase>(); 
+builder.Services.AddScoped<IDeleteProductUseCase, DeleteProductUseCase>();
 
 var app = builder.Build();
 

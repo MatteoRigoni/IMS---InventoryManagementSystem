@@ -1,0 +1,60 @@
+﻿@page "/editproduct/{id:int}"
+
+@inject IViewProductByIdUseCase ViewProductByIdUseCase;
+@inject IEdiProductUseCase EditProductUseCase;
+@inject NavigationManager NavigationManager;
+
+<h3>Edit Product</h3>
+@if (_product != null)
+{
+    <EditForm Model="_product" OnValidSubmit="OnValidSubmit">
+        <DataAnnotationsValidator></DataAnnotationsValidator>
+        <ValidationSummary></ValidationSummary>
+
+        <div class="form-group mb-1">
+            <label for="name">Product name</label>
+            <InputText id="name" @bind-Value="_product.Name" class="form-control"></InputText>
+        </div>
+        @*<div class="form-group mb-1">
+            <label for="quantity">Quantity</label>
+            <InputNumber id="quantity" @bind-Value="_product.Quantity" class="form-control"></InputNumber>
+        </div>*@
+        <div class="form-group mb-3">
+            <label for="price">Price</label>
+            <InputNumber id="price" @bind-Value="_product.Price" class="form-control"></InputNumber>
+        </div>
+
+        <ProductInventoriesComponent 
+            ProductInventories = "_product.ProductInventories"
+            OnInventoriesChanged="OnInventoriesChanged">
+        </ProductInventoriesComponent>
+
+        <br/>
+
+        <button type="submit" class="btn btn-primary">Save</button>
+    </EditForm>
+}
+
+@code {
+
+    [Parameter]
+    public int Id { get; set; }
+
+    private Product _product;
+
+    protected override async Task OnParametersSetAsync()
+    {
+        _product = await ViewProductByIdUseCase.ExecuteAsync(Id);
+    }
+
+    private void OnInventoriesChanged(List<ProductInventory> productInventories)
+    {
+        _product.ProductInventories = productInventories;
+    }
+
+    private async Task OnValidSubmit()
+    {
+        await EditProductUseCase.ExecuteAsync(_product);
+        NavigationManager.NavigateTo("/products");
+    }
+}

@@ -11,7 +11,7 @@
 
 @if (DisplaySearchResult && _inventories != null && _selectedInventory == null)
 {
-    <div>
+    <div class="border-bottom text-muted" style="overflow-y:auto; max-height:250px">
         <ul style="list-style-type:none">
             @foreach(var inventory in _inventories)
             {
@@ -34,7 +34,7 @@
     public bool DisplaySearchResult { get; set; } = false;
 
     [Parameter]
-    public EventCallback<Inventory> OnSelectInventory { get; set; }
+    public EventCallback<Inventory> OnSelectedInventory { get; set; }
 
     private async Task ViewInventories()
     {
@@ -50,6 +50,6 @@
     private async Task SelectInventory(Inventory inventory)
     {
         _selectedInventory = inventory;
-        await OnSelectInventory.InvokeAsync(_selectedInventory);
+        await OnSelectedInventory.InvokeAsync(_selectedInventory);
     }
 }

@@ -1,0 +1,61 @@
+﻿<div class="form-group">
+    <label>Inventories</label>
+    <ViewInventoriesComponent DisplaySearchResult="true"
+                              OnSelectedInventory="OnSelectedInventory">
+    </ViewInventoriesComponent>
+</div>
+@if (ProductInventories != null && ProductInventories.Count > 0)
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Quantity</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var pi in ProductInventories)
+            {
+                <tr>
+                    <td>@pi.Inventory.Name</td>
+                    <td>
+                        <input type="number" class="form-control" min="0"
+                            @bind-value="pi.InventoryQuantity" @bind-value:event="oninput"
+                            @onchange="OnInventoryQuantityChanged"/>
+                    </td>
+                    <td>
+                        <button class="btn btn-link" type="button" @onclick="@(() => RemoveInventory(pi))">Remove</button>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+
+
+@code {
+    [Parameter]
+    public EventCallback<List<ProductInventory>> OnInventoriesChanged { get; set; }
+
+    [Parameter]
+    public List<ProductInventory> ProductInventories  { get; set; } = new List<ProductInventory>();
+
+    private async Task OnInventoryQuantityChanged()
+    {
+         await OnInventoriesChanged.InvokeAsync(ProductInventories);
+    }
+
+    private async Task OnSelectedInventory(Inventory inventory)
+    {
+        if (!ProductInventories.Any(pi => pi.Inventory.Name.Equals(inventory.Name, StringComparison.OrdinalIgnoreCase)))
+            ProductInventories.Add(new ProductInventory { InventoryId = inventory.Id, Inventory = inventory });
+
+        await OnInventoriesChanged.InvokeAsync(ProductInventories);
+    }
+
+    private void RemoveInventory(ProductInventory pi)
+    {
+        ProductInventories.Remove(pi);
+    }
+}

@@ -9,7 +9,7 @@
 
 <ViewInventoriesComponent 
     OnSearchInventories="OnSearchInventories"
-    DisplaySearchResult="true">
+    DisplaySearchResult="false">
 </ViewInventoriesComponent>
 
 @if (_inventories != null)
@@ -52,6 +52,4 @@
     {
         NavigationManager.NavigateTo("/addinventory");
     }
-
-    
 }

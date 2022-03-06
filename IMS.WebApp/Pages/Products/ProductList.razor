@@ -14,7 +14,7 @@
         <thead>
             <tr>
                 <th>Name</th>
-                <th>Quantity</th>
+                @*<th>Quantity</th>*@
                 <th>Price</th>
                 <th></th>
             </tr>
@@ -22,7 +22,10 @@
         <tbody>
             @foreach (var product in _products)
             {
-               <ProductItemComponent Product="product"></ProductItemComponent>
+               <ProductItemComponent 
+                Product="product"
+                OnProductDeleted="OnProductDeleted">
+            </ProductItemComponent>
             }
         </tbody>
     </table>
@@ -35,8 +38,7 @@
 
     protected override async Task OnInitializedAsync()
     {
-        base.OnInitialized();
-        _products = (await ViewProductsByNameUseCase.ExecuteAsync("")).ToList();
+        await ReloadProducts();
     }
 
     private void OnSearchProducts(List<Product> products)
@@ -44,8 +46,18 @@
         _products = products;
     }
 
-     private void AddProduct()
+    private void AddProduct()
     {
         NavigationManager.NavigateTo("/addproduct");
+    }
+
+    private async Task OnProductDeleted()
+    {
+        await ReloadProducts();
+    }
+
+    private async Task ReloadProducts()
+    {
+         _products = (await ViewProductsByNameUseCase.ExecuteAsync("")).ToList();
     }
 }
