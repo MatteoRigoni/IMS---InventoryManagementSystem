@@ -49,5 +49,21 @@ namespace IMS.Plugins.EFCore
 
             await _context.SaveChangesAsync();
         }
+
+        public async Task SellProduct(string salesOrderNumber, Product product, int quantity, double price, string doneBy)
+        {
+            _context.ProductTransactions.Add(new ProductTransaction()
+            {
+                SalesOrderNumber = salesOrderNumber,
+                ProductId = product.Id,
+                QuantityBefore = product.Quantity,
+                QuantityAfter= product.Quantity + quantity,
+                DoneBy= doneBy,
+                TransactionDate = DateTime.Now,
+                UnitPrice = price
+            });
+
+            await _context.SaveChangesAsync();
+        }
     }
 }

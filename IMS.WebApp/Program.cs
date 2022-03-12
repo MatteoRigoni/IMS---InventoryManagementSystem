@@ -50,6 +50,7 @@ builder.Services.AddScoped<IDeleteProductUseCase, DeleteProductUseCase>();
 builder.Services.AddScoped<IPurchaseInventoryUseCase, PurchaseInventoryUseCase>();
 builder.Services.AddScoped<IProduceProductUseCase, ProduceProductUseCase>();
 builder.Services.AddScoped<IValidateEnoughInventoriesFOrProductingUseCase, ValidateEnoughInventoriesFOrProductingUseCase>();
+builder.Services.AddScoped<ISellProductUseCase, SellProductUseCase>();
 
 var app = builder.Build();
 

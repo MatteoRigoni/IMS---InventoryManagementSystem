@@ -1,0 +1,73 @@
+﻿@page "/sell"
+
+<h3>Sell Product</h3>
+
+@inject ISellProductUseCase SellProductUseCase;
+
+<ErrorMessageComponent ErrorMessage="@_errorMessage"></ErrorMessageComponent>
+
+@if (_sellVIewModel != null)
+{
+    <EditForm Model="_sellVIewModel" OnValidSubmit="OnValidSubmit">
+        <DataAnnotationsValidator></DataAnnotationsValidator>
+        <ValidationSummary></ValidationSummary>
+
+        <div class="form-group mb-3">
+            <label for="name">Production Number</label>
+            <InputText id="name" @bind-Value="_sellVIewModel.SalesOrderNumber" class="form-control"></InputText>
+        </div>
+        <div class="form-group mb-3">
+            <label for="Product">Product to produce</label>
+            <ViewProductsComponent OnSelectedProduct="OnSelectedProduct" DisplaySearchResult="true"> </ViewProductsComponent>
+            <InputText id="inv" class="form-control" @bind-Value="_sellVIewModel.ProductName" disabled></InputText>
+            <input type="hidden" value="@_sellVIewModel.ProductId" />
+        </div>
+
+        <div class="form-group mb-3">
+            <label for="price">Price</label>
+            <InputNumber id="price" @bind-Value="_sellVIewModel.ProductPrice" class="form-control"></InputNumber>
+        </div>
+
+        <div class="form-group mb-3">
+            <label for="price">Quantity</label>
+            <InputNumber id="quantity" @bind-Value="_sellVIewModel.QuantityToSell" class="form-control"></InputNumber>
+        </div>
+        
+        <button type="submit" class="btn btn-primary">Save</button>
+    </EditForm>  
+}
+
+@code {
+    private SellViewModel _sellVIewModel = new SellViewModel();
+    private Product _selectedProduct;
+    private string _errorMessage;
+
+    private async Task OnValidSubmit()
+    {
+        _errorMessage = null;
+
+        if (_selectedProduct.Quantity < _sellVIewModel.QuantityToSell)
+        {
+            _errorMessage = $"The quantity of products is not enough. Only {_selectedProduct.Quantity} products are available!";
+            return;
+        }
+
+        await SellProductUseCase.ExecuteAsync(
+            _sellVIewModel.SalesOrderNumber,
+            _selectedProduct,
+            _sellVIewModel.QuantityToSell,
+            "frodo"
+        );
+
+        _sellVIewModel = new SellViewModel();
+        _selectedProduct = null;
+    }
+
+    private void OnSelectedProduct(Product product)
+    {
+        _selectedProduct = product;
+        _sellVIewModel.ProductId = product.Id;
+        _sellVIewModel.ProductName = product.Name;
+        _sellVIewModel.ProductPrice = product.Price;
+    }
+}
