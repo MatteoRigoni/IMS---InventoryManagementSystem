@@ -1,6 +1,8 @@
 using IMS.Plugins.EFCore;
 using IMS.UseCases;
 using IMS.UseCases.Interfaces;
+using IMS.UseCases.Inventories;
+using IMS.UseCases.Inventories.Interfaces;
 using IMS.UseCases.PluginInterfaces;
 using IMS.UseCases.Products;
 using IMS.UseCases.Products.Interfaces;
@@ -32,6 +34,7 @@ builder.Services.AddDbContext<IMSContext>(options =>
 // DI repositories
 builder.Services.AddScoped<IInventoryRepository, InventoryRepository>();
 builder.Services.AddScoped<IProductRepository, ProductRepository>();
+builder.Services.AddScoped<IInventoryTransactionRepository, InventoryTransactionRepository>();
 
 // DI use cases
 builder.Services.AddScoped<IViewInventoriesByNameUseCase, ViewInventoriesByNameUseCase>();
@@ -43,6 +46,7 @@ builder.Services.AddScoped<IViewProductByIdUseCase, ViewProductByIdUseCase>();
 builder.Services.AddScoped<IAddProductUseCase, AddProductUseCase>(); 
 builder.Services.AddScoped<IEdiProductUseCase, EdiProductUseCase>(); 
 builder.Services.AddScoped<IDeleteProductUseCase, DeleteProductUseCase>();
+builder.Services.AddScoped<IPurchaseInventoryUseCase, PurchaseInventoryUseCase>();
 
 var app = builder.Build();
 

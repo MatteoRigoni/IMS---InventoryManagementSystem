@@ -1,0 +1,61 @@
+﻿@page "/purchase"
+
+@inject IPurchaseInventoryUseCase PurchaseInventoryUseCase;
+
+<h3>Purchase Inventory</h3>
+<br/>
+
+@if (_purchaseViewModel != null)
+{
+    <EditForm Model="_purchaseViewModel" OnValidSubmit="OnValidSubmit">
+        <DataAnnotationsValidator></DataAnnotationsValidator>
+        <ValidationSummary></ValidationSummary>
+
+        <div class="form-group mb-3">
+            <label for="name">Purchase Order</label>
+            <InputText id="name" @bind-Value="_purchaseViewModel.PurchaseOrder" class="form-control"></InputText>
+        </div>
+        <div class="form-group mb-3">
+            <label for="inventory">Inventory to purchase</label>
+            <ViewInventoriesComponent OnSelectedInventory="OnSelectedInventory" DisplaySearchResult="true"> </ViewInventoriesComponent>
+            <InputText id="inv" class="form-control" @bind-Value="_purchaseViewModel.InventoryName" disabled></InputText>
+            <input type="hidden" value="@_purchaseViewModel.InventoryId" />
+            @if (_selectedInventory != null)
+            {
+                <text>Price:</text>
+                @_selectedInventory.Price.ToString("c")
+            }
+            
+        </div>
+        <div class="form-group mb-3">
+            <label for="price">Quantity</label>
+            <InputNumber id="quantity" @bind-Value="_purchaseViewModel.QuantityToPurchase" class="form-control"></InputNumber>
+        </div>
+        
+        <button type="submit" class="btn btn-primary">Save</button>
+    </EditForm>  
+}
+
+
+
+@code {
+    private PurchaseViewModel _purchaseViewModel = new PurchaseViewModel();
+    private Inventory _selectedInventory;
+
+    private void OnSelectedInventory(Inventory inventory)
+    {
+        _selectedInventory = inventory;
+        _purchaseViewModel.InventoryId = inventory.Id;
+        _purchaseViewModel.InventoryName = inventory.Name;
+    }
+
+    private void OnValidSubmit()
+    {
+        PurchaseInventoryUseCase.ExecuteAsync(
+            _purchaseViewModel.PurchaseOrder,
+            _selectedInventory,
+            _purchaseViewModel.QuantityToPurchase,
+            "Frodo"
+        );
+    }
+}

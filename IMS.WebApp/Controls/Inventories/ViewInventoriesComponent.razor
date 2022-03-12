@@ -1,29 +1,43 @@
 ﻿@inject IViewInventoriesByNameUseCase ViewInventoriesByNameUseCase;
 
 <div class="input-group mb-3">
-    <input type="text" class="form-control form-control-lg" 
-        placeholder="Type inventory name here to search"
-        @bind-value="inventoryNameToSearch"/>
-    <button type="button" class="input-group-text btn-success" 
-        @onclick="@(async () => {await ViewInventories(); })">View</button>
+    <input type="text" class="form-control form-control-lg"
+           placeholder="Type inventory name here to search"
+           @bind-value="inventoryNameToSearch"
+           @bind-value:event="oninput" />
+    <button type="button" class="input-group-text btn-success"
+            @onclick="@(async () => {await ViewInventories(); })">
+        View
+    </button>
 </div>
-<br />
 
 @if (DisplaySearchResult && _inventories != null && _selectedInventory == null)
 {
     <div class="border-bottom text-muted" style="overflow-y:auto; max-height:250px">
         <ul style="list-style-type:none">
-            @foreach(var inventory in _inventories)
+            @foreach (var inventory in _inventories)
             {
                 <li style="cursor:pointer" @onclick="@(async() => { await SelectInventory(inventory); })"
-                    @key="inventory.Id">@inventory.Name</li>
+            @key="inventory.Id">@inventory.Name</li>
             }
         </ul>
     </div>
 }
 
 @code {
-    private string? inventoryNameToSearch;
+    private string? _inventoryNameToSearch;
+    public string? inventoryNameToSearch
+    {
+        get => _inventoryNameToSearch;
+        set
+        {
+            _inventoryNameToSearch = value;
+            if (!String.IsNullOrWhiteSpace(_inventoryNameToSearch) && _inventoryNameToSearch.Length >= 2)
+            {
+                ViewInventories();
+            }
+        }
+    }
     private List<Inventory>? _inventories;
     private Inventory? _selectedInventory;
 
@@ -45,6 +59,8 @@
         await OnSearchInventories.InvokeAsync(_inventories);
 
         _selectedInventory = null;
+
+        StateHasChanged();
     }
 
     private async Task SelectInventory(Inventory inventory)
