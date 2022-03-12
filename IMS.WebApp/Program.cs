@@ -35,6 +35,7 @@ builder.Services.AddDbContext<IMSContext>(options =>
 builder.Services.AddScoped<IInventoryRepository, InventoryRepository>();
 builder.Services.AddScoped<IProductRepository, ProductRepository>();
 builder.Services.AddScoped<IInventoryTransactionRepository, InventoryTransactionRepository>();
+builder.Services.AddScoped<IProductTransactionRepository, ProductTransactionRepository>();
 
 // DI use cases
 builder.Services.AddScoped<IViewInventoriesByNameUseCase, ViewInventoriesByNameUseCase>();
@@ -47,6 +48,8 @@ builder.Services.AddScoped<IAddProductUseCase, AddProductUseCase>();
 builder.Services.AddScoped<IEdiProductUseCase, EdiProductUseCase>(); 
 builder.Services.AddScoped<IDeleteProductUseCase, DeleteProductUseCase>();
 builder.Services.AddScoped<IPurchaseInventoryUseCase, PurchaseInventoryUseCase>();
+builder.Services.AddScoped<IProduceProductUseCase, ProduceProductUseCase>();
+builder.Services.AddScoped<IValidateEnoughInventoriesFOrProductingUseCase, ValidateEnoughInventoriesFOrProductingUseCase>();
 
 var app = builder.Build();
 

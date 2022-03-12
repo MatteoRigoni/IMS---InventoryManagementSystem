@@ -4,9 +4,9 @@
 @if (Product != null)
 {
     <tr>
-        <td class="col-md-5">@Product.Name</td>
-        @*<td class="col-md-2">@Product.Quantity</td>*@
-        <td class="col-md-4">@Product.Price.ToString("c")</td>
+        <td class="col-md-4">@Product.Name</td>
+        <td class="col-md-2">@Product.Quantity</td>
+        <td class="col-md-3">@Product.Price.ToString("c")</td>
         <td class="col-md-3">
             <button type="button" class="btn btn-light" @onclick="@(() => EditProduct(@Product.Id))">Edit</button>
             <button type="button" class="btn btn-danger" @onclick="@(async () => {await DeleteProduct(@Product.Id);})">Delete</button>

@@ -18,7 +18,7 @@
             @foreach (var inventory in _inventories)
             {
                 <li style="cursor:pointer" @onclick="@(async() => { await SelectInventory(inventory); })"
-            @key="inventory.Id">@inventory.Name</li>
+                    @key="inventory.Id">@inventory.Name</li>
             }
         </ul>
     </div>

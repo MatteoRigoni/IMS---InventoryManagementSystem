@@ -7,18 +7,18 @@ using System.Threading.Tasks;
 
 namespace IMS.CoreBusiness
 {
-    public class InventoryTransaction
+    public class ProductTransaction
     {
-        public int InventoryTransactionId { get; set; }
-        public InventoryTransactionType TransactionType { get; set; }
+        public int ProductTransactionId { get; set; }
+        public ProductTransactionType TransactionType { get; set; }
         [Required]
-        public int InventoryId { get; set; }
+        public int ProductId { get; set; }
         [Required]
         public int QuantityBefore { get; set; }
         [Required]
         public int QuantityAfter { get; set; }
-        public string? PoNumber { get; set; }
         public string? ProductionNumber { get; set; }
+        public string? SalesOrderNumber { get; set; }
         public double? UnitPrice { get; set; }
         [Required]
         public DateTime TransactionDate { get; set; }
@@ -26,6 +26,6 @@ namespace IMS.CoreBusiness
         public string DoneBy { get; set; }
 
         // Navigation properties
-        public Inventory Inventory { get; set; }
+        public Product Product { get; set; }
     }
 }

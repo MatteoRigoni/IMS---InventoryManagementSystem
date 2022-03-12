@@ -30,7 +30,7 @@ namespace IMS.Plugins.EFCore
                     TransactionType = InventoryTransactionType.PurchaseInventory,
                     TransactionDate = DateTime.Now,
                     DoneBy = doneBy,
-                    Cost = price * quantity
+                    UnitPrice = price
                 });
 
                 await _context.SaveChangesAsync();
