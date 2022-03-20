@@ -1,0 +1,46 @@
+﻿@page "/transactions/inventory"
+
+@inject IGetInventoriesTransactionsUseCase GetInventoriesTransactionsUseCase;
+@inject IJSRuntime JsRuntime;
+
+<h3>Inventory Transactions</h3>
+<br />
+
+<div class="row">
+    <div class="col">
+        <label for="inv">Inventory name</label>
+        <input type="text" id="inv" class="form-control" @bind-value="invName" />
+    </div>
+    <div class="col">
+        <label for="df">Date from</label>
+        <input type="date" id="df" class="form-control" @bind-value="dateFrom" />
+    </div>
+    <div class="col">
+        <label for="dt">Date to</label>
+        <input type="date" id="dt" class="form-control" @bind-value="dateTo" />
+    </div>
+    <div class="col">
+        <label for="tt">Transaction type</label>
+        <select  id="tt" class="form-control" @bind="transactionTypeId" >
+            <option id="1">Purchase inventory</option>
+            <option id="2">Produce product</option>
+        </select>
+    </div>
+    <div class="col">
+        <label>&nbsp;</label>
+        <button type="button" class="btn btn-primary form-control" @onclick="SearchInventories" >Search</button>
+    </div>
+</div>
+
+@code {
+    private string invName;
+    private DateTime dateFrom;
+    private DateTime dateTo;
+    private int transactionTypeId;
+
+    private async Task SearchInventories()
+    {
+        var result = await GetInventoriesTransactionsUseCase.ExecuteAsync(invName, dateFrom, dateTo, (InventoryTransactionType) transactionTypeId);
+        await JsRuntime.InvokeVoidAsync("Alert", "Function will be available soon...");
+    }
+}

@@ -1,5 +1,7 @@
 ﻿@page "/editproduct/{id:int}"
 
+@attribute [Authorize]
+
 @inject IViewProductByIdUseCase ViewProductByIdUseCase;
 @inject IEdiProductUseCase EditProductUseCase;
 @inject NavigationManager NavigationManager;

@@ -6,6 +6,8 @@ using IMS.UseCases.Inventories.Interfaces;
 using IMS.UseCases.PluginInterfaces;
 using IMS.UseCases.Products;
 using IMS.UseCases.Products.Interfaces;
+using IMS.UseCases.Reports;
+using IMS.UseCases.Reports.Interfaces;
 using IMS.WebApp.Areas.Identity;
 using IMS.WebApp.Data;
 using Microsoft.AspNetCore.Components.Authorization;
@@ -26,10 +28,12 @@ builder.Services.AddServerSideBlazor();
 builder.Services.AddScoped<AuthenticationStateProvider, RevalidatingIdentityAuthenticationStateProvider<IdentityUser>>();
 builder.Services.AddSingleton<WeatherForecastService>();
 
+//builder.Services.AddDbContext<IMSContext>(options =>
+//{
+//    options.UseInMemoryDatabase("IMS");
+//});
 builder.Services.AddDbContext<IMSContext>(options =>
-{
-    options.UseInMemoryDatabase("IMS");
-});
+    options.UseSqlServer(builder.Configuration.GetConnectionString("InventoryManagement")));
 
 // DI repositories
 builder.Services.AddScoped<IInventoryRepository, InventoryRepository>();
@@ -51,6 +55,8 @@ builder.Services.AddScoped<IPurchaseInventoryUseCase, PurchaseInventoryUseCase>(
 builder.Services.AddScoped<IProduceProductUseCase, ProduceProductUseCase>();
 builder.Services.AddScoped<IValidateEnoughInventoriesFOrProductingUseCase, ValidateEnoughInventoriesFOrProductingUseCase>();
 builder.Services.AddScoped<ISellProductUseCase, SellProductUseCase>();
+builder.Services.AddScoped<IGetInventoryByIdUseCase, GetInventoryByIdUseCase>();
+builder.Services.AddScoped<IGetInventoriesTransactionsUseCase, GetInventoriesTransactionsUseCase>();
 
 var app = builder.Build();
 
